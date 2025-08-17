@@ -159,8 +159,8 @@ impl HtmlElement {
     /// element.add_child("Second Line".into());
     /// assert_eq!(element.to_html_string(), "<p>First Line<br/>Second Line</p>");
     /// ```
-    pub fn add_child(&mut self, content: HtmlChild) {
-        self.children.push(content);
+    pub fn add_child(&mut self, content: impl Into<HtmlChild>) {
+        self.children.push(content.into());
     }
 
     /// Consume this element and return it with the new child appended
@@ -178,8 +178,8 @@ impl HtmlElement {
     ///     .to_html_string();
     /// assert_eq!(output, "<p>First Line<br/>Second Line</p>");
     /// ```
-    pub fn with_child(mut self, content: HtmlChild) -> Self {
-        self.add_child(content);
+    pub fn with_child(mut self, content: impl Into<HtmlChild>) -> Self {
+        self.add_child(content.into());
         self
     }
 
