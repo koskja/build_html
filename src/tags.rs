@@ -15,6 +15,8 @@ pub enum HtmlTag {
     Aside,
     /// Indicates a blockquote
     Blockquote,
+    /// A button
+    Button,
     /// HTML canvas element
     Canvas,
     /// Used to mark the title of a cited work
@@ -64,6 +66,8 @@ pub enum HtmlTag {
     Image,
     /// An inline quote
     InlineQuote,
+    /// An input box
+    Input,
     /// A manual line break
     LineBreak,
     /// A link to another page or resource
@@ -124,6 +128,7 @@ impl HtmlTag {
             Self::Article => "article",
             Self::Aside => "aside",
             Self::Blockquote => "blockquote",
+            Self::Button => "button",
             Self::Canvas => "canvas",
             Self::Cite => "cite",
             Self::CodeText => "code",
@@ -146,6 +151,7 @@ impl HtmlTag {
             Self::Iframe => "iframe",
             Self::Image => "img",
             Self::InlineQuote => "q",
+            Self::Input => "input",
             Self::LineBreak => "br",
             Self::Link => "a",
             Self::ListElement => "li",
