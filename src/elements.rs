@@ -7,7 +7,6 @@ use std::fmt::{self, Display, Formatter};
 ///
 /// Generally, `HtmlContent` shouldn't need to be used directly. You can use `.into()` to convert
 /// strings and [`HtmlElement`]s into this type. For example:
-/// 
 /// ```
 /// # use build_html::*;
 /// let html = HtmlElement::new(HtmlTag::Div)
@@ -19,7 +18,6 @@ use std::fmt::{self, Display, Formatter};
 ///             .into() // Convert this `HtmlElement` into an `HtmlChild::Element`
 ///     )
 ///     .to_html_string();
-/// 
 /// assert_eq!(html, "<div><p>raw text</p></div>")
 /// ```
 #[derive(Debug, Clone)]
@@ -159,8 +157,8 @@ impl HtmlElement {
     /// element.add_child("Second Line".into());
     /// assert_eq!(element.to_html_string(), "<p>First Line<br/>Second Line</p>");
     /// ```
-    pub fn add_child(&mut self, content: impl Into<HtmlChild>) {
-        self.children.push(content.into());
+    pub fn add_child(&mut self, content: HtmlChild) {
+        self.children.push(content);
     }
 
     /// Consume this element and return it with the new child appended
@@ -178,9 +176,44 @@ impl HtmlElement {
     ///     .to_html_string();
     /// assert_eq!(output, "<p>First Line<br/>Second Line</p>");
     /// ```
-    pub fn with_child(mut self, content: impl Into<HtmlChild>) -> Self {
-        self.add_child(content.into());
+    pub fn with_child(mut self, content: HtmlChild) -> Self {
+        self.add_child(content);
         self
+    }
+
+    /// Add a new child to this element
+    ///
+    /// This functions allows you to pass any type that implements [`Into<HtmlChild>`] directly,
+    /// like `&str` and `HtmlElement`.
+    ///
+    /// ```
+    /// # use build_html::*;
+    /// let mut element = HtmlElement::new(HtmlTag::ParagraphText);
+    /// element.add_childi("First Line");
+    /// element.add_childi(HtmlElement::new(HtmlTag::LineBreak));
+    /// element.add_childi("Second Line");
+    /// assert_eq!(element.to_html_string(), "<p>First Line<br/>Second Line</p>");
+    /// ```
+    pub fn add_childi(&mut self, content: impl Into<HtmlChild>) {
+        self.add_child(content.into())
+    }
+
+    /// Consume this element and return it with the new child appended
+    ///
+    /// This functions allows you to pass any type that implements [`Into<HtmlChild>`] directly,
+    /// like `&str` and `HtmlElement`.
+    ///
+    /// ```
+    /// # use build_html::*;
+    /// let output = HtmlElement::new(HtmlTag::ParagraphText)
+    ///     .with_childi("First Line")
+    ///     .with_childi(HtmlElement::new(HtmlTag::LineBreak))
+    ///     .with_childi("Second Line")
+    ///     .to_html_string();
+    /// assert_eq!(output, "<p>First Line<br/>Second Line</p>");
+    /// ```
+    pub fn with_childi(self, content: impl Into<HtmlChild>) -> Self {
+        self.with_child(content.into())
     }
 
     /// Add an attribute to this element
